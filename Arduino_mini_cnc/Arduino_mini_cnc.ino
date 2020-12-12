@@ -26,7 +26,7 @@ Servo penServo;
 
 // Initialize steppers for X- and Y-axis using this Arduino pins for the L293D H-bridge
 Stepper myStepperY(stepsPerRevolution, 2,3,4,5);            
-Stepper myStepperX(stepsPerRevolution, 8,9,10,11);  
+Stepper myStepperX(stepsPerRevolution, 9,10,11,12);  
 
 /* Structures, global variables    */
 struct point { 
@@ -64,7 +64,7 @@ float Ypos = Ymin;
 float Zpos = Zmax; 
 
 // Set to true to get debug output.
-boolean verbose = false;
+boolean verbose =     false;
 
 //  Needs to interpret 
 //  G1 for moving
@@ -81,10 +81,12 @@ void setup() {
   //  Setup
   Serial.begin( 9600 );
   
-  penServo.attach(penServoPin);
-  penServo.write(penZUp);
+  //penServo.attach(penServoPin);
+  //penServo.write(penZUp);
+  
+  pinMode(LED_BUILTIN, OUTPUT);
   delay(200);
-
+  digitalWrite(LED_BUILTIN, HIGH); // Pen up
   // Decrease if necessary
   myStepperX.setSpeed(250);
   myStepperY.setSpeed(250);  
@@ -201,6 +203,18 @@ void processIncomingLine( char* line, int charNB ) {
     case 'D':
       penDown(); 
       break;
+    case 'L':
+      myStepperX.step(-StepInc); 
+      break;
+    case 'R':
+      myStepperX.step(StepInc); 
+      break;
+    case 'A':   
+      myStepperY.step(StepInc); 
+      break;
+    case 'B':
+      myStepperY.step(-StepInc); 
+      break;
     case 'G':
       buffer[0] = line[ currentIndex++ ];          // /!\ Dirty - Only works with 2 digit commands
       //      buffer[1] = line[ currentIndex++ ];
@@ -232,7 +246,7 @@ void processIncomingLine( char* line, int charNB ) {
         actuatorPos.y = newPos.y;
         break;
       }
-      break;
+      break;    
     case 'M':
       buffer[0] = line[ currentIndex++ ];        // /!\ Dirty - Only works with 3 digit commands
       buffer[1] = line[ currentIndex++ ];
@@ -320,20 +334,28 @@ void drawLine(float x1, float y1) {
   }
 
   //  Convert coordinates to steps
-  x1 = (int)(x1*StepsPerMillimeterX);
-  y1 = (int)(y1*StepsPerMillimeterY);
+  x1 = (float)(x1*StepsPerMillimeterX);
+  y1 = (float)(y1*StepsPerMillimeterY);
   float x0 = Xpos;
   float y0 = Ypos;
 
   //  Let's find out the change for the coordinates
-  long dx = abs(x1-x0);
-  long dy = abs(y1-y0);
+  float dx = abs(x1-x0);
+  float dy = abs(y1-y0);
   int sx = x0<x1 ? StepInc : -StepInc;
   int sy = y0<y1 ? StepInc : -StepInc;
 
   long i;
   long over = 0;
-
+  if (verbose)
+  {
+    Serial.print("dx, dy:");
+    Serial.print(dx);
+    Serial.print(",");
+    Serial.print(dy);
+    Serial.println("");
+  }
+  
   if (dx > dy) {
     for (i=0; i<dx; ++i) {
       myStepperX.step(sx);
@@ -384,7 +406,8 @@ void drawLine(float x1, float y1) {
 
 //  Raises pen
 void penUp() { 
-  penServo.write(penZUp); 
+  digitalWrite(LED_BUILTIN, HIGH);
+  //penServo.write(penZUp); 
   delay(LineDelay); 
   Zpos=Zmax; 
   if (verbose) { 
@@ -392,8 +415,9 @@ void penUp() {
   } 
 }
 //  Lowers pen
-void penDown() { 
-  penServo.write(penZDown); 
+void penDown() {
+  digitalWrite(LED_BUILTIN, LOW); 
+  //penServo.write(penZDown); 
   delay(LineDelay); 
   Zpos=Zmin; 
   if (verbose) { 

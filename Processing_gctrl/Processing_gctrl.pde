@@ -69,20 +69,28 @@ void draw()
   text("current jog speed: " + speed + " inches per step", 12, y); y -= dy;
   text("current serial port: " + portname, 12, y); y -= dy;
 }
-
-void keyPressed()
+  
+  void keyPressed()
 {
   if (key == '1') speed = 0.001;
   if (key == '2') speed = 0.01;
   if (key == '3') speed = 0.1;
   
   if (!streaming) {
+    if (keyCode == LEFT) port.write("L\n");
+    if (keyCode == RIGHT) port.write("R\n");
+    if (keyCode == UP) port.write("A\n");
+    if (keyCode == DOWN) port.write("B\n");
+    if (keyCode == KeyEvent.VK_PAGE_UP) port.write("U\n");
+    if (keyCode == KeyEvent.VK_PAGE_DOWN) port.write("D\n");
+    /*
     if (keyCode == LEFT) port.write("G91\nG20\nG00 X-" + speed + " Y0.000 Z0.000\n");
     if (keyCode == RIGHT) port.write("G91\nG20\nG00 X" + speed + " Y0.000 Z0.000\n");
     if (keyCode == UP) port.write("G91\nG20\nG00 X0.000 Y" + speed + " Z0.000\n");
     if (keyCode == DOWN) port.write("G91\nG20\nG00 X0.000 Y-" + speed + " Z0.000\n");
     if (keyCode == KeyEvent.VK_PAGE_UP) port.write("G91\nG20\nG00 X0.000 Y0.000 Z" + speed + "\n");
     if (keyCode == KeyEvent.VK_PAGE_DOWN) port.write("G91\nG20\nG00 X0.000 Y0.000 Z-" + speed + "\n");
+    */
     if (key == 'h') port.write("G90\nG20\nG00 X0.000 Y0.000 Z0.000\n");
     if (key == 'v') port.write("$0=75\n$1=74\n$2=75\n");
     //if (key == 'v') port.write("$0=100\n$1=74\n$2=75\n");
