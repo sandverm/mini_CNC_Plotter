@@ -8,7 +8,7 @@
 #### 3: Enjoy movement of XYZ axis controlled by Arduino 
 
 ![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_arduino.png)
-![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_arduino_1.jpg)
-![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_arduino_2.jpg)
-![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_arduino_3.jpg)
+![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_plotter_1.jpeg)
+![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_plotter_2.jpeg)
+![Screenshot](https://raw.githubusercontent.com/sandverm/mini_CNC_Plotter/master/mini_cnc_plotter_3.jpeg)
 
